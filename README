@@ -1,0 +1,13 @@
+
+1. Build
+
+sudo docker build -t proxy .
+
+2. Run
+
+sudo docker run -t -i -p 3128:3128 --cap-add=NET_ADMIN proxy bash
+
+
+Make sure this is in /etc/default/docker
+
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
