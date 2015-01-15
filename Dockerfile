@@ -1,14 +1,15 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 
 RUN apt-get update  \
   && apt-get install -y squid3 openvpn \
   && mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist
 
-ADD openvpn/* /etc/openvpn/
-ADD ./start.sh /start.sh
-RUN chmod u+x /start.sh
+COPY openvpn/* /etc/openvpn/
 
-ADD squid/squid.conf /etc/squid3/squid.conf
+COPY squid/squid.conf /etc/squid3/squid.conf
 EXPOSE 3128
 
-#CMD /start
+COPY start.sh /start.sh
+RUN chmod u+x /start.sh
+
+CMD /start.sh
