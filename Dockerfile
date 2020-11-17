@@ -1,15 +1,15 @@
-FROM debian:jessie
+FROM debian:buster
 
-RUN apt-get update  \
-  && apt-get install -y squid3 openvpn \
-  && mv /etc/squid3/squid.conf /etc/squid3/squid.conf.dist
+RUN apt update  \
+  && apt install -y wget unzip squid3 openvpn
 
-COPY openvpn/* /etc/openvpn/
+RUN cd /etc/openvpn \
+ && wget https://www.privateinternetaccess.com/openvpn/openvpn-nextgen.zip \
+ && unzip openvpn-nextgen.zip \
+ && bash -c 'for f in *.ovpn; do f2=${f%.ovpn}; f2="${f2// /_}.conf"; mv -v "$f" "$f2"; echo "auth-user-pass client.cred" >> "$f2"; done'
 
-COPY squid/squid.conf /etc/squid3/squid.conf
-EXPOSE 3128
-
+COPY squid/squid.conf /etc/squid/conf.d/docker.conf
 COPY start.sh /start.sh
-RUN chmod u+x /start.sh
 
+EXPOSE 3128
 CMD /start.sh

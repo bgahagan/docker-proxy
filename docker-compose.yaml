@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+
+  squid:
+    ports:
+      - "3128:3128"
+    build: .
+    dns_search: .
+    dns: 8.8.8.8
+    restart: on-failure
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./client.cred:/etc/openvpn/client.cred
+    environment:
+      - OPENVPN_CLIENT=US_West
