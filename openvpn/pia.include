@@ -1,0 +1,5 @@
+auth-user-pass /etc/openvpn/client.cred
+#log /var/log/openvpn/pia.log
+verb 3
+route-nopull
+redirect-gateway

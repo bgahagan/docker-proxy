@@ -10,7 +10,8 @@ if ! [ -f /etc/openvpn/client.cred ] ; then
   exit 1
 fi
 
-/etc/init.d/openvpn start "${OPENVPN_CLIENT:-US_West}"
+openvpn "/etc/openvpn/${OPENVPN_CLIENT:-US_West}.conf" &
+sleep 1
 
 # Start Squid
 
