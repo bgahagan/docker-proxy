@@ -10,6 +10,12 @@ if ! [ -f /etc/openvpn/client.cred ] ; then
   exit 1
 fi
 
+# Setup routes to local networks, so they don't go through the vpn
+if [ -n "$OPENVPN_LOCALNET" ] ; then
+  default_gw=$(ip route show | awk '/default via/ {print $3}')
+  ip route add "$OPENVPN_LOCALNET" via "$default_gw"
+fi
+
 openvpn "/etc/openvpn/${OPENVPN_CLIENT:-US_West}.conf" &
 sleep 1
 
