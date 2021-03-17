@@ -1,17 +1,42 @@
-version: "3.7"
 services:
+
+  pia:
+    build: pia
+      #dns_search: .
+      #dns: 8.8.8.8
+    restart: on-failure
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - "net.ipv4.conf.all.src_valid_mark=1"
+    privileged: true
+    networks:
+      - vpn
+        #ipv4_address: 172.18.1.1
+    volumes:
+      - ./client.cred:/etc/openvpn/client.cred
+    env_file:
+      - pia.env
 
   squid:
     ports:
       - "3128:3128"
-    build: .
-    dns_search: .
-    dns: 8.8.8.8
+    build: squid
+      #dns_search: .
+      #dns: 8.8.8.8
+    networks:
+      - vpn
     restart: on-failure
-    cap_add:
-      - NET_ADMIN
-    volumes:
-      - ./client.cred:/etc/openvpn/client.cred
-    environment:
-      - OPENVPN_CLIENT=US_West
-      - OPENVPN_LOCALNET=192.168.0.0/16
+    profiles:
+      - disabled
+
+networks:
+  vpn:
+    internal: false
+    #ipam:
+    #  driver: default
+    #  config:
+    #    - subnet: "172.18.0.0/16"
+    #      ip_range: "172.18.0.0/24"
+    #      gateway: "172.18.0.1"

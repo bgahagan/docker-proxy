@@ -16,9 +16,4 @@ if [ -n "$OPENVPN_LOCALNET" ] ; then
   ip route add "$OPENVPN_LOCALNET" via "$default_gw"
 fi
 
-openvpn "/etc/openvpn/${OPENVPN_CLIENT:-US_West}.conf" &
-sleep 1
-
-# Start Squid
-
-squid -N
+openvpn "/etc/openvpn/${OPENVPN_CLIENT:-US_West}.conf"
