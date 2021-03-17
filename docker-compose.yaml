@@ -2,20 +2,19 @@ services:
 
   pia:
     build: pia
-      #dns_search: .
-      #dns: 8.8.8.8
     restart: on-failure
     cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
+      - NET_ADMIN # to create wireguard interface
+      - SYS_MODULE # for wireguard module
     sysctls:
+      # Wireguard requires this
       - "net.ipv4.conf.all.src_valid_mark=1"
-    privileged: true
+      # Enable packet routing
+      - "net.ipv4.ip_forward=1"
+    privileged: true # current version of wireguard needs this
     networks:
-      - vpn
-        #ipv4_address: 172.18.1.1
-    volumes:
-      - ./client.cred:/etc/openvpn/client.cred
+      vpn:
+        ipv4_address: 172.18.0.2
     env_file:
       - pia.env
 
@@ -23,20 +22,40 @@ services:
     ports:
       - "3128:3128"
     build: squid
-      #dns_search: .
-      #dns: 8.8.8.8
+    cap_add:
+      - NET_ADMIN # to update default route
+    dns_search: .
+    dns: 10.0.0.243
     networks:
       - vpn
     restart: on-failure
+    depends_on:
+      - pia
     profiles:
       - disabled
+
+  tor:
+    ports:
+      - "9050:9050"
+    build: tor
+    cap_add:
+      - NET_ADMIN # to update default route
+    dns_search: .
+    dns: 10.0.0.243
+    networks:
+      - vpn
+    restart: on-failure
+    depends_on:
+      - pia
+    profiles:
+      - disabled
+
 
 networks:
   vpn:
     internal: false
-    #ipam:
-    #  driver: default
-    #  config:
-    #    - subnet: "172.18.0.0/16"
-    #      ip_range: "172.18.0.0/24"
-    #      gateway: "172.18.0.1"
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/16"
+          gateway: "172.18.0.1"

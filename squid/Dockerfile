@@ -6,4 +6,7 @@ RUN apt update  \
 COPY squid.conf /etc/squid/conf.d/docker.conf
 
 EXPOSE 3128
-CMD ["squid", "-N"]
+
+COPY start.sh /start.sh
+
+CMD /start.sh

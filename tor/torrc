@@ -1,0 +1,21 @@
+# For more options, see
+# https://gitweb.torproject.org/tor.git/tree/src/config/torrc.sample.in
+
+DataDirectory           /tmp/tor
+RunAsDaemon             0
+AvoidDiskWrites         1
+
+SOCKSPort               0.0.0.0:9050
+
+ExitRelay 0
+
+Log notice stdout
+
+# Socks5Proxy           shadowsocks.local:1080
+# ReachableAddresses    accept *:443
+# ReachableAddresses    accept *:80
+
+# Get your bridge at https://bridges.torproject.org/ if needed
+# UseBridges            1
+# Bridge                obfs4 31.171.1  ...
+# Bridge                obfs4 107.178.1 ...
