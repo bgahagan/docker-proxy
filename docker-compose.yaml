@@ -32,7 +32,23 @@ services:
     depends_on:
       - pia
     profiles:
-      - disabled
+      - http-proxy
+
+  socks:
+    ports:
+      - "9040:1080"
+    build: socks
+    cap_add:
+      - NET_ADMIN # to update default route
+    dns_search: .
+    dns: 10.0.0.243
+    networks:
+      - vpn
+    restart: on-failure
+    depends_on:
+      - pia
+    profiles:
+      - socks-proxy
 
   tor:
     ports:
@@ -48,7 +64,7 @@ services:
     depends_on:
       - pia
     profiles:
-      - disabled
+      - tor
 
 
 networks:

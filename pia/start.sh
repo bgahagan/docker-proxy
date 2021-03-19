@@ -4,7 +4,7 @@ set -euo pipefail
 
 export PIA_DNS=true
 export PIA_PF=true
-export AUTOCONNECT=true
+#export AUTOCONNECT=true
 #export PREFERRED_REGION=
 export VPN_PROTOCOL=wireguard
 

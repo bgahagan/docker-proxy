@@ -213,6 +213,13 @@ OpenVPN UDP   $bestServer_OU_IP\t-     $bestServer_OU_hostname
 ${NC}"
 fi
 
+echo -e "The connected server:
+${GREEN}Meta Services $bestServer_meta_IP\t-     $bestServer_meta_hostname
+WireGuard     $bestServer_WG_IP\t-     $bestServer_WG_hostname
+OpenVPN TCP   $bestServer_OT_IP\t-     $bestServer_OT_hostname
+OpenVPN UDP   $bestServer_OU_IP\t-     $bestServer_OU_hostname
+${NC}"
+
 # The script will check for an authentication token, and use it if present
 # If no token exists, the script will check for login credentials to generate one
 if [[ -z "$PIA_TOKEN" ]] || [[ $PIA_TOKEN == "" ]]; then
