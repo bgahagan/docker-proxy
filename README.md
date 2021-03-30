@@ -2,7 +2,8 @@
 
 A docker-compose file that sets up multiple services:
 * A PIA VPN connection
-* A Squid http proxy
+* A socks4/5 proxy
+* A http(s) proxy
 * A tor relay
 
 ### Build
